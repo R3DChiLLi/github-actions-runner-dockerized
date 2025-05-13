@@ -3,6 +3,8 @@
 ### run the below commands
 
 git clone repo
+
+# Go to the folder
 cd /github-actions-runner-dockerized
 
 # Build the docker image
