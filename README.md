@@ -11,7 +11,4 @@ cd /github-actions-runner-dockerized
 docker build -t gh-runner:latest .
 
 ### Run the container
-docker run -d --name my-runner \
-  -e GITHUB_URL="https://github.com/OWNER/REPO" \
-  -e RUNNER_TOKEN="YOUR_REPO_REG_TOKEN" \
-  gh-runner:latest
+docker run -d --name my-runner -e GITHUB_URL="https://github.com/OWNER/REPO" -e RUNNER_TOKEN="YOUR_REPO_REG_TOKEN" gh-runner:latest
