@@ -1,0 +1,25 @@
+services:
+  runner:
+    image: r3dchilli/gh-runner:latest
+    restart: always
+    environment:
+      - REPO=R3DChiLLi/github-actions-runner-dockerized
+      - TOKEN=<your-PAT>
+      # - DISABLE_RUNNER_UPDATE=true
+      # - RUNNER_DISABLE_UPDATE=true
+    deploy:
+      mode: replicated
+      replicas: 4
+      resources:
+        limits:
+          cpus: '0.35'
+          memory: 300M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+#     volumes:
+#       - runner_data:/home/docker/actions-runner
+
+# volumes:
+#   runner_data:
+#     driver: local
