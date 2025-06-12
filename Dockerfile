@@ -21,8 +21,8 @@ COPY start.sh start.sh
 RUN chmod +x start.sh
 
 # Disable auto-update to ensure stability
-# ENV RUNNER_DISABLE_UPDATE=true
-# ENV DISABLE_RUNNER_UPDATE=true
+ENV RUNNER_DISABLE_UPDATE=true
+ENV DISABLE_RUNNER_UPDATE=true
 
 # Since the config and run script for actions are not allowed to be run by root,
 # set the user to "docker" so all subsequent commands are run as the docker user
