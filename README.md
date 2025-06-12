@@ -7,8 +7,16 @@ git clone repo
 ### Go to the folder
 cd /github-actions-runner-dockerized
 
-### Build the docker image
-docker build -t gh-runner:latest .
+### initialize swarm cluster
+docker swarm init
 
-### Run the container
-docker run -d --name my-runner -e GITHUB_URL="https://github.com/OWNER/REPO" -e RUNNER_TOKEN="YOUR_REPO_REG_TOKEN" gh-runner:latest
+### Run the stack
+docker stack deploy -c docker-compose.yml gh-runner
+
+### If you want to increase the number of replicas:
+you can edit the docker-compose.yml file replicas section and then do "docker stack deploy -c docker-compose.yml gh-runner" again
+
+### 
+
+### Optional (You can modify the Dockerfile if you want to make your own custom image)
+
