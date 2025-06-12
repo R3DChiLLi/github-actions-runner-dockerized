@@ -1,35 +1,27 @@
 FROM ubuntu:20.04
 
-ENV RUNNER_VERSION=2.323.0 \
-    RUNNER_NAME=self-hosted-runner \
-    RUNNER_WORKDIR=/_work
+ARG RUNNER_VERSION="2.323.0"
 
-# install deps…
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y \
-      ca-certificates curl git iputils-ping jq libcurl4 libicu66 \
-      libkrb5-3 libssl1.1 liblttng-ust0 unzip && \
-    rm -rf /var/lib/apt/lists/*
+# Prevents installdependencies.sh from prompting the user and blocking the image creation
+ARG DEBIAN_FRONTEND=noninteractive
 
-# create runner user & workdir
-RUN useradd --create-home runner && \
-    mkdir -p /actions-runner /_work && \
-    chown -R runner:runner /actions-runner /_work
+RUN apt update -y && apt upgrade -y && useradd -m docker
+RUN apt install -y --no-install-recommends \
+    curl jq build-essential libssl-dev libffi-dev python3 python3-venv python3-dev python3-pip
 
-WORKDIR /actions-runner
+RUN cd /home/docker && mkdir actions-runner && cd actions-runner \
+    && curl -o -L https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz \
+    | tar xzf - actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz
 
-# download & unpack the runner as before
-RUN curl -fsSL \
-      -o actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz \
-      https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz \
- && tar zxvf actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz \
- && rm actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz
+RUN chown -R docker:docker /home/docker/actions-runner/bin/installdependencies.sh
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+COPY start.sh start.sh
 
-# drop to non-root
-USER runner
+# make the script executable
+RUN chmod +x start.sh
 
-ENTRYPOINT ["/entrypoint.sh"]
+# since the config and run script for actions are not allowed to be run by root,
+# set the user to "docker" so all subsequent commands are run as the docker user
+USER docker
 
+ENTRYPOINT ["./start.sh"]
