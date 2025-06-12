@@ -1,6 +1,6 @@
 FROM ubuntu:20.04
 
-ARG RUNNER_VERSION="2.294.0"
+ARG RUNNER_VERSION="2.325.0"
 
 # Prevents installdependencies.sh from prompting the user and blocking the image creation
 ARG DEBIAN_FRONTEND=noninteractive
@@ -17,10 +17,14 @@ RUN chown -R docker ~docker && /home/docker/actions-runner/bin/installdependenci
 
 COPY start.sh start.sh
 
-# make the script executable
+# Make the script executable
 RUN chmod +x start.sh
 
-# since the config and run script for actions are not allowed to be run by root,
+# Disable auto-update to ensure stability
+# ENV RUNNER_DISABLE_UPDATE=true
+# ENV DISABLE_RUNNER_UPDATE=true
+
+# Since the config and run script for actions are not allowed to be run by root,
 # set the user to "docker" so all subsequent commands are run as the docker user
 USER docker
 
