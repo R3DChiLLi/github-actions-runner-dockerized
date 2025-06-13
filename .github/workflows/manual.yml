@@ -21,7 +21,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "greet"
-  greet:
+  custom-1:
     # The type of runner that the job will run on
     runs-on: custom-1
 
@@ -35,7 +35,7 @@ jobs:
         pwd
         ls -ltr
 
-  test:
+  custom-3:
     # The type of runner that the job will run on
     runs-on: custom-3
 
@@ -49,3 +49,44 @@ jobs:
         pwd
         ls -ltr
 
+  custom-2:
+    # The type of runner that the job will run on
+    runs-on: custom-2
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Runs a single command using the runners shell
+    - name: Send greeting
+      run: |
+        echo "Hello ${{ inputs.name }}"
+        hostname
+        pwd
+        ls -ltr
+
+  custom-4:
+    # The type of runner that the job will run on
+    runs-on: custom-4
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Runs a single command using the runners shell
+    - name: Send greeting
+      run: |
+        echo "Hello ${{ inputs.name }}"
+        hostname
+        pwd
+        ls -ltr
+
+  custom-5:
+    # The type of runner that the job will run on
+    runs-on: custom-5
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Runs a single command using the runners shell
+    - name: Send greeting
+      run: |
+        echo "Hello ${{ inputs.name }}"
+        hostname
+        pwd
+        ls -ltr
