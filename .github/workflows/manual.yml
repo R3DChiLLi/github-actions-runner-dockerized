@@ -33,4 +33,5 @@ jobs:
         echo "Hello ${{ inputs.name }}"
         touch file3.txt
         pwd
+        ls -ltr
 
