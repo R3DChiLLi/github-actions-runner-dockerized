@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   runner:
@@ -6,23 +6,24 @@ services:
     restart: always
     environment:
       - REPO=R3DChiLLi/github-actions-runner-dockerized
-      - TOKEN=
+      - TOKEN=                     # ← pass your PAT with an env-file or export
       - DISABLE_RUNNER_UPDATE=true
       - RUNNER_DISABLE_UPDATE=true
-      - RUNNER_NAME=runner-{{.Task.Slot}}
+      - RUNNER_NAME=runner-{{.Task.Slot}}  # unique name per replica
     deploy:
       mode: replicated
       replicas: 4
       resources:
         limits:
-          cpus: '0.35'
+          cpus: "0.35"
           memory: 300M
         reservations:
-          cpus: '0.25'
+          cpus: "0.25"
           memory: 128M
     volumes:
       - runner_data:/home/docker/actions-runner
 
 volumes:
   runner_data:
+    name: runner_data-{{.Task.Slot}}       # ← one volume per replica
     driver: local
